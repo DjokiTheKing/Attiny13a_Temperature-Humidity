@@ -1,0 +1,59 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "avr-gcc.exe compile",
+			"command": "avr-gcc.exe",
+			"args": [
+				"-C",
+				"-mmcu=attiny13a",     // Will ensure MCU defines are set correctly
+                "-DF_CPU=9600000UL",   // Will ensure F_CPU is set correctly
+                "-Os",
+				"${workspaceFolder}\\sources\\*",
+				"main.S",
+				"-o",
+				"build\\main.elf"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"detail": "compiler: avr-gcc.exe"
+		},
+		{
+			"type": "shell",
+			"label":"Convert to .hex",
+			"command": "avr-objcopy.exe",
+			"args": [
+				"-j", ".text",
+				"-j", ".data",
+				"-O", "ihex",
+				"build\\main.elf",
+				"build\\main.hex"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			}
+		},
+		{
+			"type": "shell",
+			"label":"Build project!",
+			"command": "avr-size.exe",
+			"args": [
+				"-C",
+				"--mcu=attiny13a",
+				"build\\main.elf"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"dependsOrder": "sequence",
+			"dependsOn": ["avr-gcc.exe compile", "Convert to .hex"],
+			"problemMatcher": [],
+			"group": {
+        		"kind": "build",
+        		"isDefault": true
+    		}
+		}
+	]
+}
