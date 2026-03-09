@@ -218,13 +218,13 @@ measure:
     rcall i2c_send_start
 
     ldi r25, 0x00
-    rcall aht20_send_addr ; +1
+    rcall aht20_send_addr
 
     ldi r24, 0xAC
-    rcall aht20_write_and_test ; +1
+    rcall aht20_write_and_test
 
     ldi r24, 0x33
-    rcall aht20_write_and_test ; +1
+    rcall aht20_write_and_test
 
     ldi r24, 0x00
     rcall aht20_write_and_test
@@ -269,7 +269,6 @@ measure_read_loop:
     ldi ZH, hi8(temp_start)
     rcall display_write_string
 
-    ; skip temperature data and convert humidity data
     pop r23
     pop r22
     ldi r21, 4
